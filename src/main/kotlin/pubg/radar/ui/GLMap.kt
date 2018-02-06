@@ -194,7 +194,7 @@ class GLMap: InputAdapter(), ApplicationListener, GameListener {
     //draw map
     paint(camera.combined) {
       draw(map, 0f, 0f, mapWidth, mapWidth,
-           0, 0, mapWidthCropped, mapWidthCropped,
+           0, 0, map.width, map.height,
            false, true)
     }
     
