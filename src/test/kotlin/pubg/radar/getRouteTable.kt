@@ -1,7 +1,6 @@
 package pubg.radar
 
 import pubg.radar.sniffer.Sniffer.Companion.localAddr
-import pubg.radar.util.notify
 import java.io.*
 import java.net.Inet4Address
 
@@ -24,7 +23,6 @@ fun main(args: Array<String>) {
   if (maxIp != null) {
     val routeIpAddr = Inet4Address.getByName(maxIp.key) as Inet4Address
   } else {
-    notify("Cannot find any ip in the route table")
     System.exit(0)
   }
 }
