@@ -1,6 +1,6 @@
 package pubg.radar
 
-import pubg.radar.sniffer.Sniffer.Companion.localAddr
+import pubg.radar.sniffer.Sniffer.Companion.targetAddr
 import java.io.*
 import java.net.Inet4Address
 
@@ -17,7 +17,7 @@ fun main(args: Array<String>) {
       (count ?: 0) + 1
     }
   }
-  ips.remove(localAddr.hostAddress)
+  ips.remove(targetAddr.hostAddress)
   ips.remove("127.0.0.1")
   val maxIp = ips.maxBy { it.value }
   if (maxIp != null) {

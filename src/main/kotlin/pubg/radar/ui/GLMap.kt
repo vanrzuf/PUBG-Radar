@@ -22,7 +22,7 @@ import pubg.radar.deserializer.channel.ActorChannel.Companion.visualActors
 import pubg.radar.http.PlayerProfile.Companion.completedPlayerInfo
 import pubg.radar.http.PlayerProfile.Companion.pendingPlayerInfo
 import pubg.radar.http.PlayerProfile.Companion.query
-import pubg.radar.sniffer.Sniffer.Companion.localAddr
+import pubg.radar.sniffer.Sniffer.Companion.targetAddr
 import pubg.radar.sniffer.Sniffer.Companion.preDirection
 import pubg.radar.sniffer.Sniffer.Companion.preSelfCoords
 import pubg.radar.sniffer.Sniffer.Companion.selfCoords
@@ -89,7 +89,7 @@ class GLMap: InputAdapter(), ApplicationListener, GameListener {
   
   fun show() {
     val config = Lwjgl3ApplicationConfiguration()
-    config.setTitle("[${localAddr.hostAddress} ${sniffOption.name}] - PUBG Radar")
+    config.setTitle("[${targetAddr.hostAddress} ${sniffOption.name}] - PUBG Radar")
     config.useOpenGL3(true, 3, 3)
     config.setWindowedMode(1000, 1000)
     config.setResizable(true)

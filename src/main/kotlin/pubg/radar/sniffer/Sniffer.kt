@@ -11,6 +11,7 @@ import pubg.radar.sniffer.SniffOption.*
 import java.io.*
 import java.io.File.separator
 import java.net.Inet4Address
+import java.net.InetAddress
 import kotlin.collections.ArrayList
 import kotlin.concurrent.thread
 import kotlin.experimental.and
@@ -44,7 +45,7 @@ class Sniffer {
     }
 
     val nif: PcapNetworkInterface
-    val localAddr: Inet4Address
+    val targetAddr: Inet4Address
     val sniffOption: SniffOption
 
     val preSelfCoords = Vector2()
@@ -70,12 +71,11 @@ class Sniffer {
 
       val devDesc=choices.first { it.address.hostAddress== Args[0] }
       nif = devDesc.dev
-      val localAddr = devDesc.address
-
+      val localAddr =if(Args.size==3) InetAddress.getByName(Args[2]) as Inet4Address else devDesc.address
       sniffOption=SniffOption.valueOf(Args[1])
-      this.nif = nif!!
-      this.localAddr = localAddr
-      this.sniffOption = sniffOption!!
+      this.nif = nif
+      this.targetAddr = localAddr
+      this.sniffOption = sniffOption
     }
 
     const val snapLen = 65536
@@ -140,7 +140,7 @@ class Sniffer {
             val ip = packet[IpPacket::class.java]
             val udp = udp_payload(packet) ?: return@loop
             val raw = udp.payload.rawData
-            if (ip.header.srcAddr == localAddr) {
+            if (ip.header.srcAddr == targetAddr) {
               if (raw.size == 44)
                 parseSelfLocation(raw)
             } else if (udp.header.srcPort.valueAsInt() in 7000..7999)
@@ -153,7 +153,7 @@ class Sniffer {
 
     fun sniffLocationOffline(): Thread {
       return thread(isDaemon = true) {
-        val files = arrayOf("d:\\test13.pcap")
+        val files = arrayOf("test13.pcap")
         for (file in files) {
           val handle = Pcaps.openOffline(file)
 
@@ -163,7 +163,7 @@ class Sniffer {
               val ip = packet[IpPacket::class.java]
               val udp = udp_payload(packet) ?: continue
               val raw = udp.payload.rawData
-              if (ip.header.srcAddr == localAddr) {
+              if (ip.header.srcAddr == targetAddr) {
                 if (raw.size == 44)
                   parseSelfLocation(raw)
               } else if (udp.header.srcPort.valueAsInt() in 7000..7999)
