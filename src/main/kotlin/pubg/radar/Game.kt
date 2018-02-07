@@ -36,6 +36,7 @@ fun gameOver() {
   gameStarted = false
   gameListeners.forEach { it.onGameOver() }
 }
+
 lateinit var Args:Array<String>
 fun main(args: Array<String>) {
   Args=args
