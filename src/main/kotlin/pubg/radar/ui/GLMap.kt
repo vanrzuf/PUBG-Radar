@@ -56,7 +56,9 @@ import pubg.radar.struct.cmd.GameStateCMD.SafetyZoneRadius
 import pubg.radar.struct.cmd.GameStateCMD.TotalWarningDuration
 import pubg.radar.struct.cmd.PlayerStateCMD.attacks
 import pubg.radar.struct.cmd.PlayerStateCMD.playerNames
+import pubg.radar.struct.cmd.PlayerStateCMD.playerNumKills
 import pubg.radar.struct.cmd.PlayerStateCMD.selfID
+import pubg.radar.struct.cmd.PlayerStateCMD.teamNumbers
 import pubg.radar.util.PlayerProfile.Companion.query
 import pubg.radar.util.tuple4
 import wumo.pubg.struct.cmd.TeamCMD.team
@@ -104,7 +106,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     fun show() {
         val config = Lwjgl3ApplicationConfiguration()
         config.setTitle("")
-        config.useOpenGL3(false, 3, 2)
+        config.useOpenGL3(false, 2, 1)
         config.setWindowedMode(800, 800)
         config.setResizable(true)
         config.useVsync(false)
@@ -799,10 +801,13 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
             actor!!
             val playerStateGUID = actorWithPlayerState[actor.netGUID] ?: return@forEach
             val name = playerNames[playerStateGUID] ?: return@forEach
+            val teamNumber = teamNumbers[playerStateGUID] ?: 0
+            val numKills = playerNumKills[playerStateGUID] ?: 0
             val (sx, sy) = Vector2(x, y).mapToWindow()
+            //println("$playerStateGUID ID=$name TeamNo.=$teamNumber Kills=$numKills")
             query(name)
-            nameFont.draw(spriteBatch, "$name "/* +
-                    "/($numKills)\n$teamNumber*/
+            nameFont.draw(spriteBatch, "$name "  /* +
+                    "/($numKills)\n($teamNumber)" */
                     , sx + 2, windowHeight - sy - 2)
         }
     }

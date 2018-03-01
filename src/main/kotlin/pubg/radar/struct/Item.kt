@@ -64,6 +64,7 @@ class Item {
                         "MedKit" to "MedKit"
                 ),
                 "Weapon" to mapOf(
+                        "M16" to "M16A4",
                         "M16A4" to "M16A4",
                         "HK416" to "HK416",
                         "Kar98k" to "Kar98k",
