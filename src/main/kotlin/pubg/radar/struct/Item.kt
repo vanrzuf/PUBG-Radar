@@ -2,6 +2,8 @@ package pubg.radar.struct
 
 class Item {
     companion object {
+        // Group
+        // Inner, Outer ?
         private val category = mapOf(
                 "Attach" to mapOf(
                         "Weapon" to mapOf(
@@ -45,11 +47,11 @@ class Item {
                                         )
                                 ),
                                 "Upper" to mapOf(
-                                        "DotSight" to "red-dot",
-                                        "Aimpoint" to "2x",
-                                        "Holosight" to "holo",
-                                        "ACOG" to "4x",
-                                        "CQBSS" to "8x"
+                                        "DotSight" to "DotSight",
+                                        "Aimpoint" to "Aimpoint",
+                                        "Holosight" to "Holosight",
+                                        "ACOG" to "ACQG",
+                                        "CQBSS" to "CQBSS"
                                 )
                         )
                 ),
@@ -62,23 +64,27 @@ class Item {
                         "MedKit" to "MedKit"
                 ),
                 "Weapon" to mapOf(
-                        "HK416" to "M4",
-                        "M416" to "M4",
-                        "Kar98k" to "98k",
-                        "Kar98" to "98k",
-                        "SCAR-L" to "Scar",
-                        "AK47" to "Ak",
-                        "SKS" to "Sks",
-                        "Grenade" to "Grenade",
-                        "Mini14" to "Mini",
+                        "M16A4" to "M16A4",
+                        "HK416" to "HK416",
+                        "Kar98k" to "Kar98k",
+                        "SCAR-L" to "SCAR-L",
+                        "AK47" to "AK47",
+                        "SKS" to "SKS",
+                        "Mini14" to "Mini14",
                         "DP28" to "DP28",
-                        "UMP" to "Ump",
+                        "UMP" to "UMP",
                         "Vector" to "Vector",
-                        "Pan" to "Pan"
+                        "Pan" to "Pan",
+                        "SawnOff" to "SawnOff",
+                        "UZI" to "UZI",
+                        "Grenade" to "Grenade"
                 ),
                 "Ammo" to mapOf(
-                        "556mm" to "556",
-                        "762mm" to "762"
+                        "9mm" to "Item_Ammo_9mm",
+                        "45mm" to "Item_Ammo_45mm",
+                        "556mm" to "Item_Ammo_556mm",
+                        "762mm" to "Item_Ammo_762mm",
+                        "300mm" to "Item_Ammo_300mm"
                 ),
                 "Armor" to mapOf(
                         "C" to mapOf("01" to mapOf("Lv3" to "Arm3")),
@@ -100,7 +106,13 @@ class Item {
                                 "02" to mapOf("Lv2" to "Helm2")
                         ),
                         "G" to mapOf("01" to mapOf("Lv3" to "Helm3"))
+                ),
+                "Other" to mapOf(
+                        "Smoke" to "Smoke",
+                        "FlashBang" to "FlashBang",
+                        "Molotov" to "Molotov"
                 )
+
         ) as Map<String, Any>
 
         /**

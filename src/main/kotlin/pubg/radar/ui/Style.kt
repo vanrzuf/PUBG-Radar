@@ -24,7 +24,7 @@ const val attackLineDuration = 1000
 const val attackMeLineDuration = 10000
 const val pinRadius = 4000f
 
-val teamColor = Color(1f, 1f, 0f, 1f)
+val teamColor = Color.YELLOW!!
 val safeDirectionColor = Color(0.12f, 0.56f, 1f, 0.5f)
 val visionColor = Color(1f, 1f, 1f, 0.1f)
 val carColor = Color(0.12f, 0.56f, 1f, 0.9f)
