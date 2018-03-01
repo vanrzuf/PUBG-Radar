@@ -126,7 +126,7 @@ object PlayerStateCMD: GameListener {
                 32 -> {
                     val teamNumber = readInt(100)
                     teamNumbers[actor.netGUID] = teamNumber
-        println("${playerNames[actor.netGUID]}${actor.netGUID} TeamNumber=$teamNumber")
+        //println("${playerNames[actor.netGUID]}${actor.netGUID} TeamNumber=$teamNumber")
                 }
                 33 -> {
                     val bIsZombie = propertyBool()
