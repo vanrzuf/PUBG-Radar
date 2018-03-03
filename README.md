@@ -2,8 +2,6 @@
 
 #### By engaging with this repository you explicitly agree with the terms of the Unlicense.
 
-https://github.com/SamuelNZ/VMRadar/releases
-
 ![Imgur](https://i.imgur.com/Pc7foHp.gif)
 
 This version runs without the spoofing shit in a VM.
@@ -17,12 +15,12 @@ You can't filter level 3 gear (always enabled)
 * HOME -> Show / Hide Compass
 NUMPAD_0 -> Filter Throwables
 NUMPAD_1 -> Filter Attachments
-NUMPAD_2 -> Filter Scopes 
-NUMPAD_3 -> Filter Ammo 
+NUMPAD_2 -> Filter Scopes
+NUMPAD_3 -> Filter Ammo
 NUMPAD_4 -> Filter Weapons
 NUMPAD_5 -> Filter Level 2 Gear          
 NUMPAD_6 -> Filter Meds
-           
+
 
 
 
@@ -58,7 +56,7 @@ You can replay a PCAP file in offline mode:
 3. Install [Maven](https://maven.apache.org/install.html) on your VM
 4. Add Maven to your environment PATH, screenshot below.
 4. Add MAVEN_OPTS environment variable, screenshot below.
-4. Install [JDK8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) on your VM and 
+4. Install [JDK8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) on your VM and
 5. Add JAVA_HOME to your Environment Path, screenshot below.
 5. Install [Wireshark + WinPCap](https://www.wireshark.org/) on your VM
 6. Use the command prompt to go to your VMRadar directory (with the src folder)
@@ -66,7 +64,7 @@ You can replay a PCAP file in offline mode:
 6. Change your IP addresses in the batch file, It will crash if they are wrong.
 8. Run the batch file.
 
------------------ 
+-----------------
 
 ```
 @echo off
@@ -77,7 +75,7 @@ set /p game=ENTER GAMEVM IP:
 echo "%game%"
 java -jar target\pubg-radar-1.0-SNAPSHOT-jar-with-dependencies.jar %_IPaddr% PortFilter "%game%"
 ```
-or 
+or
 
 ```
 @echo off
