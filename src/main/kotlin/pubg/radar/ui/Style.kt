@@ -13,7 +13,7 @@ const val vehicle2Width = 400f
 const val vehicle4Width = 800f
 const val vehicle6Width = 1600f
 const val directionRadius = 16000f
-const val visionRadius = mapWidth / 8
+const val visionRadius = mapWidth / 4
 const val fov = 90f
 
 const val aimLineWidth = 1000f

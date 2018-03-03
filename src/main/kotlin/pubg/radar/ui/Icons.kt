@@ -31,16 +31,16 @@ class Icons(sheet: Texture, size: Int) {
             "Pan" to arrayOf(3, 2),
             "Crossbow" to arrayOf(7, 2),
             // 3 Throwables
-            "Smoke" to arrayOf(0, 3),
+            "SmokeBomb" to arrayOf(0, 3),
             "FlashBang" to arrayOf(1, 3),
             "Molotov" to arrayOf(2, 3),
             "Grenade" to arrayOf(3, 3),
             // 4 Ammo
-            "Item_Ammo_9mm" to arrayOf(1, 4),
-            "Item_Ammo_5mm" to arrayOf(2, 4),
-            "Item_Ammo_56mm" to arrayOf(3, 4),
-            "Item_Ammo_762mm" to arrayOf(4, 4),
-            "Item_Ammo_300mm" to arrayOf(5, 4),
+            "9mm" to arrayOf(1, 4),
+            "45mm" to arrayOf(2, 4),
+            "556mm" to arrayOf(3, 4),
+            "762mm" to arrayOf(4, 4),
+            "300mm" to arrayOf(5, 4),
             // 5 Shotguns
             "S686" to arrayOf(0, 5),
             "SK12" to arrayOf(1, 5),
@@ -101,8 +101,8 @@ class Icons(sheet: Texture, size: Int) {
             "Holosight" to arrayOf(1, 12),
             "Aimpoint" to arrayOf(2, 12),
             "ACOG" to arrayOf(3, 12),
-            "CQBSS" to arrayOf(4, 12),
-            "15x" to arrayOf(5, 12)
+            "CQBSS" to arrayOf(4, 12)
+           // "15x" to arrayOf(5, 12)
     )
 
     fun setIcon(key: String) {

@@ -50,7 +50,7 @@ class Item {
                                         "DotSight" to "DotSight",
                                         "Aimpoint" to "Aimpoint",
                                         "Holosight" to "Holosight",
-                                        "ACOG" to "ACQG",
+                                        "ACOG" to "ACOG",
                                         "CQBSS" to "CQBSS"
                                 )
                         )
@@ -64,7 +64,10 @@ class Item {
                         "MedKit" to "MedKit"
                 ),
                 "Weapon" to mapOf(
-                        "M16" to "M16A4",
+                        "Grenade" to "Grenade",
+                        "SmokeBomb" to "SmokeBomb",
+                        "FlashBang" to "FlashBang",
+                        "Molotov" to "Molotov",
                         "M16A4" to "M16A4",
                         "HK416" to "HK416",
                         "Kar98k" to "Kar98k",
@@ -77,15 +80,14 @@ class Item {
                         "Vector" to "Vector",
                         "Pan" to "Pan",
                         "SawnOff" to "SawnOff",
-                        "UZI" to "UZI",
-                        "Grenade" to "Grenade"
+                        "UZI" to "UZI"
                 ),
                 "Ammo" to mapOf(
-                        "9mm" to "Item_Ammo_9mm",
-                        "45mm" to "Item_Ammo_45mm",
-                        "556mm" to "Item_Ammo_556mm",
-                        "762mm" to "Item_Ammo_762mm",
-                        "300mm" to "Item_Ammo_300mm"
+                        "9mm" to "9mm",
+                        "45mm" to "45mm",
+                        "556mm" to "556mm",
+                        "762mm" to "762mm",
+                        "300mm" to "300mm"
                 ),
                 "Armor" to mapOf(
                         "C" to mapOf("01" to mapOf("Lv3" to "Arm3")),
@@ -107,11 +109,6 @@ class Item {
                                 "02" to mapOf("Lv2" to "Helm2")
                         ),
                         "G" to mapOf("01" to mapOf("Lv3" to "Helm3"))
-                ),
-                "Other" to mapOf(
-                        "Smoke" to "Smoke",
-                        "FlashBang" to "FlashBang",
-                        "Molotov" to "Molotov"
                 )
 
         ) as Map<String, Any>

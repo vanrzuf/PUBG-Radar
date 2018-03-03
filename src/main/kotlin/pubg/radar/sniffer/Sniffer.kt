@@ -7,10 +7,8 @@ import org.pcap4j.core.PcapNetworkInterface
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode.PROMISCUOUS
 import org.pcap4j.core.Pcaps
 import org.pcap4j.packet.*
-import pubg.radar.Args
-import pubg.radar.GameListener
+import pubg.radar.*
 import pubg.radar.deserializer.proc_raw_packet
-import pubg.radar.register
 import pubg.radar.sniffer.SniffOption.PPTPFilter
 import pubg.radar.sniffer.SniffOption.PortFilter
 import java.net.Inet4Address
@@ -123,6 +121,7 @@ class Sniffer {
         }
 
         fun sniffLocationOnline() {
+            logLevel = LogLevel.Off
             val handle = nif.openLive(snapLen, mode, timeout)
             val filter = when (sniffOption) {
                 PortFilter -> "udp src portrange 7000-8999 or udp[4:2] = 52"
