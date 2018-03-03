@@ -102,7 +102,7 @@ class Icons(sheet: Texture, size: Int) {
             "Aimpoint" to arrayOf(2, 12),
             "ACOG" to arrayOf(3, 12),
             "CQBSS" to arrayOf(4, 12)
-           // "15x" to arrayOf(5, 12)
+            // "15x" to arrayOf(5, 12)
     )
 
     fun setIcon(key: String) {
