@@ -25,6 +25,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Filled
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Line
+import com.badlogic.gdx.math.*
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
@@ -59,9 +60,12 @@ import pubg.radar.struct.cmd.PlayerStateCMD.selfID
 import pubg.radar.util.PlayerProfile.Companion.query
 import pubg.radar.util.tuple4
 import wumo.pubg.struct.cmd.TeamCMD.team
+import java.lang.reflect.Type
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.math.pow
+import kotlin.math.*
+
+
 
 typealias renderInfo = tuple4<Actor, Float, Float, Float>
 
@@ -129,11 +133,13 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     private lateinit var alarmSound: Sound
     private lateinit var hubpanel: Texture
     private lateinit var hubpanelblank: Texture
+    private lateinit var bg_compass: Texture
     private lateinit var vehicle: Texture
     private lateinit var boat: Texture
     private lateinit var bike: Texture
     private lateinit var arrow: Texture
     private lateinit var player: Texture
+    private lateinit var playersight: Texture
     private lateinit var parachute: Texture
     private lateinit var grenade: Texture
     private lateinit var hubFont: BitmapFont
@@ -164,6 +170,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     private var filterAmmo = 1
     private var filterThrow = 1
     private var drawcompass = -1
+    private var drawSight = -1
     private var drawgrid = -1
     private var toggleView = -1
     private var scopesToFilter = arrayListOf("")
@@ -241,6 +248,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
         // Icon Filter Keybinds
             HOME -> drawcompass = drawcompass * -1
             END -> drawgrid = drawgrid * -1
+            INSERT -> drawSight = drawSight * -1
             NUMPAD_0 -> filterThrow = filterThrow * -1
             NUMPAD_4 -> filterWeapon = filterWeapon * -1
             NUMPAD_1 -> filterAttach = filterAttach * -1
@@ -310,9 +318,11 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
         hubpanelblank = Texture(Gdx.files.internal("images/hub_panel_blank_long.png"))
         corpseboximage = Texture(Gdx.files.internal("icons/box.png"))
         airdropimage = Texture(Gdx.files.internal("icons/airdrop.png"))
+        bg_compass = Texture(Gdx.files.internal("images/bg_compass.png"))
         vehicle = Texture(Gdx.files.internal("images/vehicle.png"))
         arrow = Texture(Gdx.files.internal("images/arrow.png"))
         player = Texture(Gdx.files.internal("images/player.png"))
+        playersight = Texture(Gdx.files.internal("images/playersight.png"))
         parachute = Texture(Gdx.files.internal("images/parachute.png"))
         boat = Texture(Gdx.files.internal("images/boat.png"))
         bike = Texture(Gdx.files.internal("images/bike.png"))
@@ -531,7 +541,11 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
                 espFont.draw(spriteBatch, "GRID", 260f, windowHeight - 25f)
             else
                 espFontShadow.draw(spriteBatch, "GRID", 260f, windowHeight - 25f)
-
+           /* if (drawSight == 1) //disabled for now
+                espFont.draw(spriteBatch, "SIGHT LINE", 260f, windowHeight - 42f)
+            else
+                espFontShadow.draw(spriteBatch, "SIGHT LINE", 260f, windowHeight - 42f)
+            */
 
             val pinDistance = (pinLocation.cpy().sub(selfX, selfY).len() / 100).toInt()
             val (x, y) = pinLocation.mapToWindow()
@@ -547,8 +561,8 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
                 drawGrid()
             }
 
-
             if (drawcompass == 1) {
+                spriteBatch.draw(bg_compass, windowWidth / 2 - 168f, windowHeight / 2 - 168f)
                 layout.setText(compaseFont, "0")
                 compaseFont.draw(spriteBatch, "0", windowWidth / 2 - layout.width / 2, windowHeight / 2 + layout.height + 150)                  // N
                 layout.setText(compaseFont, "45")
@@ -636,7 +650,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
                                                     if (it !in throwToFilter) {
                                                         if (iconScale > 20 && sx > 0 && sx < windowWidth && syFix > 0 && syFix < windowHeight) {
                                                             iconImages.setIcon(it)
-                                                            draw(iconImages.icon, sx + 8 + itemXlazy, syFix -8 - itemYlazy,
+                                                            draw(iconImages.icon, sx + 8 + itemXlazy, syFix - 8 - itemYlazy,
                                                                     1f / 2, 1f / 2,
                                                                     2f / 2, 2f / 2,
                                                                     iconScale, iconScale, 0f)
@@ -673,9 +687,9 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
             }
 
 
-
             drawMyself(tuple4(null, selfX, selfY, selfDir.angle()))
-            drawPawns(typeLocation)
+            val zoom = camera.zoom
+            drawPawns(typeLocation, selfX, selfY, zoom, currentTime)
 
 
         }
@@ -707,11 +721,22 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     private fun drawMyself(actorInfo: renderInfo) {
         val (actor, x, y, dir) = actorInfo
         val (sx, sy) = Vector2(x, y).mapToWindow()
-        spriteBatch.draw(
-                player,
-                sx + 2, windowHeight - sy - 2, 4.toFloat() / 2,
-                4.toFloat() / 2, 4.toFloat(), 4.toFloat(), 5f, 5f,
-                dir * -1, 0, 0, 64, 64, true, false)
+
+        if (drawSight == 1) {
+           /* spriteBatch.draw(
+                    playersight,
+                    sx + 2, windowHeight - sy - 2, 4.toFloat() / 2,
+                    4.toFloat() / 2, 4.toFloat(), 4.toFloat(), 5f, 5f,
+                    dir * -1, 0, 0, 500, 64, true, false)
+        */
+
+        } else {
+            spriteBatch.draw(
+                    player,
+                    sx + 2, windowHeight - sy - 2, 4.toFloat() / 2,
+                    4.toFloat() / 2, 4.toFloat(), 4.toFloat(), 5f, 5f,
+                    dir * -1, 0, 0, 64, 64, true, false)
+        }
 
     }
 
@@ -803,8 +828,12 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     }
 
 
-    fun drawPawns(typeLocation: EnumMap<Archetype, MutableList<renderInfo>>) {
+    fun drawPawns(typeLocation: EnumMap<Archetype, MutableList<renderInfo>>,
+                  selfX: Float, selfY: Float,
+                  zoom: Float,
+                  currentTime: Long) {
         val iconScale = 2f / camera.zoom
+
         for ((type, actorInfos) in typeLocation) {
             when (type) {
                 TwoSeatBoat -> actorInfos?.forEach {
@@ -880,12 +909,10 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
                     )
                 }
                 Player -> actorInfos?.forEach {
-
                     val iconScale = 2f / camera.zoom
                     for ((type, actorInfos) in typeLocation) {
                         val (actor, x, y, dir) = it
                         val (sx, sy) = Vector2(x, y).mapToWindow()
-
 
                         if (isTeamMate(actor)) {
                             spriteBatch.draw(
@@ -900,6 +927,8 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
                                     4.toFloat() / 2, 4.toFloat(), 4.toFloat(), 5f, 5f,
                                     dir * -1, 0, 0, 64, 64, true, false)
                         }
+                        // Bug -> Enemy Stops Drawing
+                        // aimAtMe(it, selfX, selfY, currentTime, zoom)
                     }
 
                 }
@@ -913,7 +942,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
                                 parachute,
                                 sx + 2, windowHeight - sy - 2, 4.toFloat() / 2,
                                 4.toFloat() / 2, 4.toFloat(), 4.toFloat(), 5f, 5f,
-                                dir * -1, 0, 0, 64, 64, true, false)
+                                dir * -1, 0, 0, 128, 128, true, false)
                     }
                 }
                 Grenade -> actorInfos?.forEach {
@@ -969,6 +998,43 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
                     }
                 }
             }
+        }
+    }
+
+    private fun aimAtMe(it: renderInfo, selfX: Float, selfY: Float, currentTime: Long, zoom: Float) {
+        draw(Line) {
+            //draw aim line
+            val aimLineColor = Color(0f, 0f, 1f, 1f)
+            val aimLineWidth = 1000f
+            val aimCircleRadius = 200f
+            val aimTimeThreshold = 1000
+            val aimLineRange = 50000f
+            val dirUnitVector = Vector2(1f, 0f)
+            val (actor, x, y, dir) = it
+            if (isTeamMate(actor)) return
+            val actorID = actor!!.netGUID
+            val dirVec = dirUnitVector.cpy().rotate(dir)
+            val focus = Vector2(selfX - x, selfY - y)
+            val distance = focus.len()
+            var aim = false
+            if (distance < aimLineRange && distance > aimCircleRadius) {
+                val aimAngle = focus.angle(dirVec)
+                if (aimAngle.absoluteValue < asin(aimCircleRadius / distance) * MathUtils.radiansToDegrees) { //aim
+                    aim = true
+                    aimStartTime.compute(actorID) { _, startTime ->
+                        if (startTime == null) currentTime
+                        else {
+                            if (currentTime - startTime > aimTimeThreshold) {
+                                color = aimLineColor
+                                rectLine(x, y, selfX, selfY, aimLineWidth * zoom)
+                            }
+                            startTime
+                        }
+                    }
+                }
+            }
+            if (!aim)
+                aimStartTime.remove(actorID)
         }
     }
 
