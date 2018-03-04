@@ -4,7 +4,6 @@ import pubg.radar.sniffer.Sniffer
 import pubg.radar.ui.GLMap
 
 const val mapWidth = 819200f
-const val gridWidth = 813000f
 
 var gameStarted = false
 var isErangel = true
