@@ -35,6 +35,7 @@ import pubg.radar.deserializer.channel.ActorChannel.Companion.airDropLocation
 import pubg.radar.deserializer.channel.ActorChannel.Companion.corpseLocation
 import pubg.radar.deserializer.channel.ActorChannel.Companion.droppedItemLocation
 import pubg.radar.deserializer.channel.ActorChannel.Companion.visualActors
+import pubg.radar.http.PlayerProfile
 import pubg.radar.sniffer.Sniffer.Companion.preDirection
 import pubg.radar.sniffer.Sniffer.Companion.preSelfCoords
 import pubg.radar.sniffer.Sniffer.Companion.selfCoords
@@ -62,7 +63,7 @@ import pubg.radar.struct.cmd.PlayerStateCMD.teamNumbers
 import pubg.radar.util.PlayerProfile.Companion.query
 import pubg.radar.util.tuple4
 import wumo.pubg.struct.cmd.TeamCMD.team
-import java.lang.reflect.Type
+//import java.lang.reflect.Type
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.*
@@ -70,7 +71,7 @@ import kotlin.math.*
 
 typealias renderInfo = tuple4<Actor, Float, Float, Float>
 
-//fun Float.d(n: Int) = String.format("%.${n}f", this)
+fun Float.d(n: Int) = String.format("%.${n}f", this)
 class GLMap : InputAdapter(), ApplicationListener, GameListener {
     companion object {
         operator fun Vector3.component1(): Float = x
@@ -296,7 +297,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     }
 
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        if (button.equals(LEFT)) {
+        if (button == LEFT) {
             dragging = false
             return true
         }
@@ -406,7 +407,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
         generator.dispose()
     }
 
-    private val dirUnitVector = Vector2(1f, 0f)
+//    private val dirUnitVector = Vector2(1f, 0f)
     override fun render() {
         Gdx.gl.glClearColor(0.417f, 0.417f, 0.417f, 0f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
@@ -836,7 +837,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     }
 
 
-    fun drawPawns(typeLocation: EnumMap<Archetype, MutableList<renderInfo>>,
+    private fun drawPawns(typeLocation: EnumMap<Archetype, MutableList<renderInfo>>,
                   selfX: Float, selfY: Float,
                   zoom: Float,
                   currentTime: Long) {
@@ -936,7 +937,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
                                     dir * -1, 0, 0, 64, 64, true, false)
                         }
                         // Bug -> Enemy Stops Drawing
-                        // aimAtMe(it, selfX, selfY, currentTime, zoom)
+                        aimAtMe(it, selfX, selfY, currentTime, zoom)
                     }
 
                 }
@@ -998,15 +999,15 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
             val (sx, sy) = Vector2(x, y).mapToWindow()
             //println("$playerStateGUID ID=$name TeamNo.=$teamNumber Kills=$numKills")
             query(name)
-//            if (PlayerProfile.completedPlayerInfo.containsKey(name)) {
-//                val info = PlayerProfile.completedPlayerInfo[name]!!
-//                val desc = "$name($numKills)\n${info.win}/${info.totalPlayed}\n${info.roundMostKill}-${info.killDeathRatio.d(2)}/${info.headshotKillRatio.d(2)}\n$teamNumber"
-//                nameFont.draw(spriteBatch, desc, sx + 2, windowHeight - sy - 2)
-//            } else {
-//                val desc = "$name($numKills)\n$teamNumber";
-//                nameFont.draw(spriteBatch, desc, sx + 2, windowHeight - sy - 2)
-//            }
-            nameFont.draw(spriteBatch, "$name "  /* + "/($numKills)\n($teamNumber)" */, sx + 2, windowHeight - sy - 2)
+            if (PlayerProfile.completedPlayerInfo.containsKey(name)) {
+                val info = PlayerProfile.completedPlayerInfo[name]!!
+                val desc = "$name($numKills)\n${info.win}/${info.totalPlayed}\n${info.roundMostKill}-${info.killDeathRatio.d(2)}/${info.headshotKillRatio.d(2)}\n$teamNumber"
+                nameFont.draw(spriteBatch, desc, sx + 2, windowHeight - sy - 2)
+            } else {
+                val desc = "$name($numKills)\n$teamNumber"
+                nameFont.draw(spriteBatch, desc, sx + 2, windowHeight - sy - 2)
+            }
+//            nameFont.draw(spriteBatch, "$name "  /* + "/($numKills)\n($teamNumber)" */, sx + 2, windowHeight - sy - 2)
         }
     }
 
@@ -1088,7 +1089,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     /**
      * @param segments 由segments段组成的图形
      */
-    fun ShapeRenderer.circle(loc: Vector2, radius: Float, segments: Int) {
+    private fun ShapeRenderer.circle(loc: Vector2, radius: Float, segments: Int) {
         circle(loc.x, loc.y, radius, segments)
     }
 
