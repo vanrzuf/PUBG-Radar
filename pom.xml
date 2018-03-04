@@ -127,11 +127,6 @@
             <version>${kotlin.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-js</artifactId>
-            <version>${kotlin.version}</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -161,7 +156,6 @@
                         <phase>compile</phase>
                         <goals>
                             <goal>compile</goal>
-                            <goal>js</goal>
                         </goals>
                     </execution>
                     <execution>
@@ -169,7 +163,6 @@
                         <phase>test-compile</phase>
                         <goals>
                             <goal>test-compile</goal>
-                            <goal>test-js</goal>
                         </goals>
                     </execution>
                 </executions>
