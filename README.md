@@ -13,14 +13,13 @@ You can't filter level 3 gear (always enabled)
 
 #### Item Filter:
 * HOME -> Show / Hide Compass
-* END -> Show / Hide Grid Lines
-* NUMPAD_0 -> Filter Throwables
-* NUMPAD_1 -> Filter Attachments
-* NUMPAD_2 -> Filter Scopes
-* NUMPAD_3 -> Filter Ammo
-* NUMPAD_4 -> Filter Weapons
-* NUMPAD_5 -> Filter Level 2 Gear          
-* NUMPAD_6 -> Filter Meds
+NUMPAD_0 -> Filter Throwables
+NUMPAD_1 -> Filter Attachments
+NUMPAD_2 -> Filter Scopes
+NUMPAD_3 -> Filter Ammo
+NUMPAD_4 -> Filter Weapons
+NUMPAD_5 -> Filter Level 2 Gear          
+NUMPAD_6 -> Filter Meds
 
 
 
