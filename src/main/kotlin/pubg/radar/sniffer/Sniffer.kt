@@ -11,6 +11,7 @@ import pubg.radar.*
 import pubg.radar.deserializer.proc_raw_packet
 import pubg.radar.sniffer.SniffOption.PPTPFilter
 import pubg.radar.sniffer.SniffOption.PortFilter
+import pubg.radar.ui.GLMap
 import java.net.Inet4Address
 import java.net.InetAddress
 import kotlin.concurrent.thread
@@ -147,7 +148,7 @@ class Sniffer {
 
         fun sniffLocationOffline(): Thread {
             return thread(isDaemon = true) {
-                val files = arrayOf("c:\\test1.pcap")
+                val files = arrayOf("d:\\wireshark\\eee.pcap")
                 for (file in files) {
                     val handle = Pcaps.openOffline(file)
 
@@ -165,7 +166,7 @@ class Sniffer {
                         } catch (e: NotOpenException) {
                             break
                         }
-                        Thread.sleep(1)
+                        Thread.sleep(GLMap.offlinePlaySpeed)
                     }
                 }
             }

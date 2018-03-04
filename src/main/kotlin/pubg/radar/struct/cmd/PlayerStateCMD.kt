@@ -6,6 +6,7 @@ import pubg.radar.register
 import pubg.radar.struct.Actor
 import pubg.radar.struct.Bunch
 import pubg.radar.struct.NetworkGUID
+import pubg.radar.http.PlayerProfile.Companion.query
 import pubg.radar.struct.cmd.CMD.propertyBool
 import pubg.radar.struct.cmd.CMD.propertyByte
 import pubg.radar.struct.cmd.CMD.propertyFloat
@@ -16,7 +17,7 @@ import pubg.radar.struct.cmd.CMD.propertyString
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
-object PlayerStateCMD: GameListener {
+object PlayerStateCMD : GameListener {
     init {
         register(this)
     }
@@ -73,9 +74,10 @@ object PlayerStateCMD: GameListener {
                 }
                 18 -> {
                     val name = propertyString()
-                    playerNames[actor.netGUID] = name
-                    //query(name)
-//          println("${actor.netGUID} playerID=$name")
+                    if (!playerNames.containsKey(actor.netGUID)) {
+                        playerNames[actor.netGUID] = name
+                        query(name)
+                    } else {}
                 }
                 19 -> {
                     val playerID = propertyInt()
@@ -103,7 +105,7 @@ object PlayerStateCMD: GameListener {
                 }
                 25 -> {
                     val StartTime = propertyInt()
-//        println("${actor.netGUID} StartTime=$StartTime")
+                    //println("${actor.netGUID} StartTime=$StartTime")
                 }
                 26 -> {
                     val uniqueId = propertyNetId()
@@ -129,7 +131,7 @@ object PlayerStateCMD: GameListener {
                 32 -> {
                     val teamNumber = readInt(100)
                     teamNumbers[actor.netGUID] = teamNumber
-//          println("${playerNames[actor.netGUID]}${actor.netGUID} TeamNumber=$teamNumber")
+                    //println("${playerNames[actor.netGUID]}${actor.netGUID} TeamNumber=$teamNumber")
                 }
                 33 -> {
                     val bIsZombie = propertyBool()

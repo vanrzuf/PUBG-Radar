@@ -33,12 +33,23 @@ class PlayerProfile {
             baseCount.clear()
         }
 
+        /**
+         * 已获取玩家信息
+         */
         val completedPlayerInfo = ConcurrentHashMap<String, PlayerInfo>()
+        /**
+         * 未获取玩家信息
+         */
         val pendingPlayerInfo = ConcurrentHashMap<String, Int>()
+        /**
+         * 计数器，用于标记是否需要获取玩家信息
+         */
         private val baseCount = ConcurrentHashMap<String, Int>()
         private val client = OkHttpClient()
         private val scheduled = AtomicBoolean(false)
         private val running = AtomicBoolean(true)
+
+//        var playerInfoQueryCount = ConcurrentHashMap<String, Int>()
 
         fun query(name: String) {
             if (completedPlayerInfo.containsKey(name)) return
@@ -49,7 +60,10 @@ class PlayerProfile {
             if (scheduled.compareAndSet(false, true))
                 thread(isDaemon = true) {
                     while (running.get()) {
-                        var next = pendingPlayerInfo.maxBy { it.value + baseCount[it.key]!! }
+                        var next = pendingPlayerInfo.maxBy {
+                            //                            println("===>$it,${it.value + baseCount[it.key]!!}")
+                            it.value + baseCount[it.key]!!
+                        }
                         if (next == null) {
                             scheduled.set(false)
                             next = pendingPlayerInfo.maxBy { it.value + baseCount[it.key]!! }
@@ -57,6 +71,7 @@ class PlayerProfile {
                                 break
                         }
                         val (name) = next
+//                        println("===>${completedPlayerInfo.size},${pendingPlayerInfo.size}")
                         if (completedPlayerInfo.containsKey(name)) {
                             pendingPlayerInfo.remove(name)
                             continue
@@ -105,9 +120,13 @@ class PlayerProfile {
 
         private fun search(name: String): PlayerInfo? {
             val url = "http://pubg.ali213.net/pubg10/ajax?nickname=$name"
-            val request = Request.Builder().url(url).build()
+//            val url = "http://pubg.ali213.net/pubg10/overview?nickname=$name"
+            val request = Request.Builder().url(url)
+                    .addHeader("User-Agent","Mozilla/5.0")
+                    .build()
             client.newCall(request).execute().use {
                 val result = it.body()?.string()
+//                println("$it")
                 if (result != null) {
                     try {
                         val idx = result.indices
@@ -122,6 +141,8 @@ class PlayerProfile {
                         val keys = result.substring(indices[3] + 1, indices[2]).split("|")
                         val data = result.substring(indices[5] + 1, indices[4])
                         val jsonData = parseData(data, keys)
+                        if (jsonData.length < 1000)
+                            return null;
                         return PlayerInfo(roundMostKillRegex.find(jsonData)!!.groups[1]!!.value.toInt(),
                                 winRegex.find(jsonData)!!.groups[1]!!.value.toInt(),
                                 totalPlayedRegex.find(jsonData)!!.groups[1]!!.value.toInt(),
