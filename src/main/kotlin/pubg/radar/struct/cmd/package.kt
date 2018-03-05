@@ -36,8 +36,11 @@ object CMD {
         if (bRepPhysics)
             readVector(1, 24)
     }
-
+    fun Bunch.propertyVectorNormal() = readFixedVector(1, 16)
+    fun Bunch.propertyVector10() = readVector(10, 24)
+    fun Bunch.propertyVectorQ() = readVector(1, 20)
     fun Bunch.propertyString() = readString()
+    fun Bunch.propertyUInt64() = readInt64()
 
     val processors: Map<Archetype, cmdProcessor>
 
@@ -50,9 +53,11 @@ object CMD {
                         Grenade to APawnCMD::process,
                         TwoSeatBoat to APawnCMD::process,
                         SixSeatBoat to APawnCMD::process,
+                        TwoSeatBike to APawnCMD::process,
                         TwoSeatCar to APawnCMD::process,
                         ThreeSeatCar to APawnCMD::process,
-                        FourSeatCar to APawnCMD::process,
+                        FourSeatP to APawnCMD::process,
+                        FourSeatDU to APawnCMD::process,
                         SixSeatCar to APawnCMD::process,
                         Plane to APawnCMD::process,
                         Player to ActorCMD::process,
